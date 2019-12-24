@@ -40,16 +40,17 @@ class Node:
     
     # ノードの内容を文字列で返すインスタンスメソッド（各自作成）
     def view(self):
-
-        return(nd)
+        return(str(self.id())+","+str(self.parent()))
     # view　終了
 
     
     # ノードがゴールノードかを判定するインスタンスメソッド（各自作成）
     def is_goal(self):
-
+        if(self.id()>=GOAL_THRESHOLD):
+            return True
             # ゴールノードであるときはTrueを返す
         else:
+            return False
             # ゴールノードでないときはFalseを返す
     # is_goal 終了
 
@@ -61,7 +62,7 @@ class Node:
         next = []
         next_ids = st.next(self.id())
         # 次のノードを作成しnextに追加(各自作成)
-        
+            next.append(next_ids)
 
             # ノードidがnid、親ノードidがself.id()のノードを作成
 
