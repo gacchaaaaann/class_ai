@@ -1,5 +1,9 @@
 #coding:UTF-8
 
+import pdb
+
+
+
 # コストを考慮しない探索(Brute_force_search)
 # 幅優先探索(Width_first_search)と深さ優先探索(Depth_first_search)での
 # ノード、クローズドリスト、状態空間を本ファイルで定義する
@@ -62,10 +66,10 @@ class Node:
         next = []
         next_ids = st.next(self.id())
         # 次のノードを作成しnextに追加(各自作成)
-            next.append(next_ids)
-
+        for nid in next_ids:
             # ノードidがnid、親ノードidがself.id()のノードを作成
-
+            nnode = Node(nid, self.id())
+            next.append(nnode)
 
         return(next)
     # expand 終了
@@ -132,12 +136,12 @@ class ClosedList:
     # add　終了
 
     
-    # クローズドリストの内容を文字列で返すインスタンスメソッド(各自作成)
-    def view(self):
-
-        # クローズドリストの内容を表す文字列clを返す
-        return(cl)
-    # view　終了
+    # クローズドリストの内容を文字列で返すインスタンスメソッド(各自作成)  (え，いらんくない…？)
+#    def view(self):
+#
+#        # クローズドリストの内容を表す文字列clを返す
+#        return(cl)
+#    # view　終了
 
 # クローズドリストの定義　終了
 
@@ -159,7 +163,9 @@ class StateSpace:
     def next(self, id):
         next = []
         # idから到達できるノードidを取得する（各自作成）
-
+        for e in self.__state_space:
+          if e[0] == id:
+            next.append(e[1])
                 
         return(next)
     # next　終了
