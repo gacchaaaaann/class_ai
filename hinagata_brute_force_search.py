@@ -50,12 +50,9 @@ class Node:
     
     # ノードがゴールノードかを判定するインスタンスメソッド（各自作成）
     def is_goal(self):
-        if(self.id()>=GOAL_THRESHOLD):
-            return True
-            # ゴールノードであるときはTrueを返す
-        else:
-            return False
-            # ゴールノードでないときはFalseを返す
+        # ゴールノードであるときはTrueを返す
+        # ゴールノードでないときはFalseを返す
+        return True if(self.id()>=GOAL_THRESHOLD) else False
     # is_goal 終了
 
     
@@ -64,8 +61,8 @@ class Node:
     def expand(self, st):
         # 次のノードのidのリストを初期化
         next = []
-        next_ids = st.next(self.id())
         # 次のノードを作成しnextに追加(各自作成)
+        next_ids = st.next(self.id())
         for nid in next_ids:
             # ノードidがnid、親ノードidがself.id()のノードを作成
             nnode = Node(nid, self.id())

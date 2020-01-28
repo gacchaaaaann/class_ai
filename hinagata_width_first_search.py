@@ -26,9 +26,9 @@ class OpenList:
     
     # オープンリストが空であるかを返すインスタンスメソッド
     def is_empty(self):
-            # 空でないときはFalseを返す
-
-            # 空であるときはTrueを返す
+          # 空でないときはFalseを返す
+          # 空であるときはTrueを返す
+          return False if self.__openlist else True
     # is_empty　終了
 
     
@@ -38,6 +38,8 @@ class OpenList:
         
         # node_listから、割り込ませるゴールノードのリストfirstと
         # オープンリストに追加するノードの候補のリストcandidatesを作成する
+        first = []
+        candidates = 
 
         
         # 割り込ませるゴールノードのリストをid順でソート
