@@ -133,12 +133,25 @@ class ClosedList:
     # add　終了
 
     
-    # クローズドリストの内容を文字列で返すインスタンスメソッド(各自作成)  (え，いらんくない…？)
-#    def view(self):
-#
-#        # クローズドリストの内容を表す文字列clを返す
-#        return(cl)
-#    # view　終了
+    # クローズドリストの内容を文字列で返すインスタンスメソッド(各自作成)
+    def view(self):
+
+        cl = "( "
+        b = False
+
+        for node in self.__closed_list:
+            if b:
+                cl += ", " + str(node.id())
+
+            else:
+                cl += str(node.id())
+                b = True
+
+        cl += " )"
+
+        # クローズドリストの内容を表す文字列clを返す
+        return(cl)
+    # view　終了
 
 # クローズドリストの定義　終了
 

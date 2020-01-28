@@ -39,7 +39,14 @@ class OpenList:
         # node_listから、割り込ませるゴールノードのリストfirstと
         # オープンリストに追加するノードの候補のリストcandidatesを作成する
         first = []
-        candidates = 
+        candidates = []
+
+        for node in node_list:
+            if node.id() >= bfs.GOAL_THRESHOLD:
+                first.append(node)
+
+            else:
+                candidates.append(node)
 
         
         # 割り込ませるゴールノードのリストをid順でソート
@@ -50,19 +57,23 @@ class OpenList:
         open_closed = self.__openlist + closed.elements()
         new_nodes = []
 
-        
+        for node in candidates:
+            for elm in open_closed:
                 # nodeと同じidのノードelmが既にオープンかクローズドに含まれるならば
-        
+                if elm.id() == node.id():
                     # nodeをnew_nodesに追加する必要はない
-
+                    break
                     
             # nodeは実際にオープンにもクローズドにも含まれないならば
-
+            else:
+                new_nodes.append(node)
+                continue
             
         # new_nodesをid順でソート
         new_nodes.sort(key=methodcaller("id"))
                 
         # オープンリストを更新する（リストを結合する順番に注意）
+        self.__openlist = first + self.__openlist + new_nodes
 
     # add_node_list　終了
 
@@ -79,6 +90,19 @@ class OpenList:
     
     # オープンリストの内容を文字列で返すインスタンスメソッド（各自作成）
     def view(self):
+
+        ol = "( " 
+        b = False
+
+        for node in self.__openlist:    # 表示を簡潔にわかりやすくするため，表示すべきはidのみで良いと判断した(idのみでノードの特定は可能，next_idの情報は余計と判断)
+            if b:
+                ol += ", " + str(node.id())
+
+            else:
+                ol += str(node.id())
+                b = True
+
+        ol += " )"
 
         # オープンリストの内容を表す文字列olを返す
         return(ol)
