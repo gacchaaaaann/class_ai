@@ -28,7 +28,7 @@ class OpenList:
     def is_empty(self):
           # 空でないときはFalseを返す
           # 空であるときはTrueを返す
-          return False if self.__openlist else True
+          return not self.__openlist 
     # is_empty　終了
 
     
