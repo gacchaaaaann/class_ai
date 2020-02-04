@@ -25,7 +25,8 @@ class OpenList:
 
     
     # オープンリストが空であるかを返すインスタンスメソッド（各自作成）
-
+    def is_empty(self):
+        return not self.__openlist
     # is_empty　終了
 
     
@@ -37,6 +38,13 @@ class OpenList:
         top = []
         candidates = []
 
+        for node in node_list:
+            if node.id() >= bfs.GOAL_THRESHOLD:
+                top.append(node)
+            else:
+                candidates.append(node)
+
+
         top.sort()
 
         # candidatesからオープンリストにもクローズドリストにも
@@ -44,20 +52,25 @@ class OpenList:
         open_closed = self.__openlist + closed.elements()
         new_nodes = []
 
+        for node in candidates:
+            for elm in open_closed:
                 # nodeと同じidのノードelmが既にオープンかクローズドに含まれるならば
-
+                if elm.id() == node.id():
                     # nodeをnew_nodesに追加する必要はない
+                    break
 
-                    
             # nodeは実際にオープンにもクローズドにも含まれないならば
+            else:
+                new_nodes.append(node)
+                continue
 
             
         # ノードのid順でソート
         new_nodes.sort(key=methodcaller("id"))
                 
         # 「スタックに積む」ことでオープンリストを更新する（順番に注意）
+        self.__openlist = top + new_nodes + self.__openlist
 
-        
     # add_node_list　終了
 
     
@@ -73,6 +86,19 @@ class OpenList:
     
     # オープンリストの内容を文字列で返すインスタンスメソッド
     def view(self):
+        
+        ol = "( "
+        b = False   #間に,を入れるため，ノード数と,を入れる処理の回数に1の差gが発生するため，初回のみ処理を別にする必要があり，そのためのフラグ
+
+        for node in self.__openlist:    #表示を簡潔にわかりやすくするため，表示すべきはidのみで良いと判断した(理由:idに一意性がある)
+            if b:
+                ol += "," + str(node.id())
+
+            else:
+                ol += str(node.id())
+                b = True
+
+        ol += " )"
         
         return(ol)
     # view　終了
