@@ -33,17 +33,17 @@ class Node:
 
     # ノードに至る順路の評価値g_hatを返すインスタンスメソッド
     def g_hat(self):
-
+        return(self.__param[2])
     # g_hat 終了
 
     # ノードからゴールまでのヒューリスティック評価値h_hatを返すインスタンスメソッド
     def h_hat(self):
-
+        return(self.__param[3])
     # h_hat終了
 
     # ノードの評価値の推定値f_hatを返すインスタンスメソッド（f_hatの定義に注意）
     def f_hat(self):
-
+        return(self.__param[2] + self.__param[3])
     # f_hat終了
     
     # ノードの内容を返すインスタンスメソッド
@@ -87,8 +87,7 @@ class Node:
         # 次のノードを作成しnextに追加
         for ni in next_info:
             # 次のノードnnodeはどう初期化すればよいか？
-            
-
+            nnode = Node( ni[0], self.__param[0], self.__param[2]+ni[1], ni[2] )
             next.append(nnode)
 
         return(next)
@@ -124,6 +123,14 @@ class Node:
     
     # 探索されたパスの内容を文字列で返すインスタンスメソッド
     def view_searched_path(self, sp):
+        strsp = ""
+        idx = 0
+        for node in sp:
+            if idx < len(sp)-1:
+                strsp = strsp + node.view() + " -> "
+                idx = idx + 1
+            else:
+                strsp = strsp + node.view()
 
         return(strsp)        
     # view_searched_path　終了
@@ -146,7 +153,8 @@ class OpenList:
 
     
     # オープンリストが空であるかを返すインスタンスメソッド
-
+    def is_empty(self):
+        return not self.__openlist
     # is_empty　終了
     
     
@@ -158,7 +166,18 @@ class OpenList:
     
     # オープンリストの内容を文字列で返すインスタンスメソッド
     def view(self):
+        cl = "( "
+        b = False
 
+        for node in self.__openlist:
+            if b:
+                cl += ", " + node.view()
+
+            else:
+                cl += node.view()
+                b = True
+
+        cl += " )"
         
         return(cl)
     # view　終了    
@@ -194,28 +213,42 @@ class OpenList:
         op_cl = self.__openlist + closed.elements()
         # non_addとremovedを作成する
 
+        for nd in node_list:
+            for opcl in op_cl:
+                if nd.id() == opcl.id():
                 # op_clとnode_listで同じidのノードがある
-
+                    if nd.f_hat() <= opcl.f_hat():
                     # op_clに含まれるノードの方が評価値が大きいならば
-
+                        removed.append(opcl)
                         # そのノードは削除の対象となる
 
                     else:
+                        non_add.append(nd)
                         # node_listに含まれるノードの方が評価値が大きいので
                         # そのノードはオープンリストに追加されない
 
-
         # non_addに含まれるノードをnode_listから削除
-
+        for nd in non_add:
+            node_list.remove(nd)
 
         # removedに含まれるノードをオープンリストまたはクローズドリストから削除
-
+        for nd in removed:
+            if nd in self.__openlist:
+                self.__openlist.remove(nd)
+            elif nd in closed.elements():
+                closed.remove(nd)
+            else:
+                print("OpenList.add_node_list error: removing node failed")
+                print("openlist: "+ self.view())
+                print("closedlist: " + closed.view() + "\n")
+                sys.exit()
         
         # オープンリストへの追加操作はnode_listにopenlistを結合することで実現
-
+        self.__openlist += node_list
 
         # オープンリストをソートする
         self.sort_nodes()
+
     # add_node_list　終了
                         
         
